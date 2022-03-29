@@ -106,20 +106,20 @@ const Calc = () => {
 				if (a === '-') {
 					p = valueField.split(a);
 					t = a;
-					setRes(parseInt(p[0]) - parseInt(p[1]));
-					setDisableBtn(true);
+					p[1] && setRes(parseInt(p[0]) - parseInt(p[1]));
+					p[1] && setDisableBtn(true);
 				}
 				if (a === '*') {
 					p = valueField.split(a);
 					t = a;
-					setRes(parseInt(p[0]) * parseInt(p[1]));
-					setDisableBtn(true);
+					p[1] && setRes(parseInt(p[0]) * parseInt(p[1]));
+					p[1] && setDisableBtn(true);
 				}
 				if (a === '/') {
 					p = valueField.split(a);
 					t = a;
-					setRes(parseInt(p[0]) / parseInt(p[1]));
-					setDisableBtn(true);
+					p[1] && setRes(parseInt(p[0]) / parseInt(p[1]));
+					p[1] && setDisableBtn(true);
 				}
 			});
 			setValueField('');
