@@ -82,28 +82,60 @@ const Calc = () => {
 		sign: '',
 	});
 	const [valueField, setValueField] = useState('');
-	const [valueFirst, setValueFirst] = useState();
-	const [valueSecond, setValueSecond] = useState();
 	const [res, setRes] = useState();
+	const [disableBtn, setDisableBtn] = useState(false);
 
 	const handleClick = (e) => {
 		e.preventDefault();
 		setRes('');
 		const fieldValue = e.target.innerHTML;
 		setValueField((prev) => prev + fieldValue);
+		fieldValue === '+' && setDisableBtn(true);
+
 		if (fieldValue === '=') {
-			let v = valueField.split('+');
-			setValueFirst(v[0]);
-			setValueSecond(v[1]);
-			setRes(parseInt(v[0]) + parseInt(v[1]));
+			let v = valueField.split('');
+			let p;
+			let t;
+			v.filter((a) => {
+				if (a === '+') {
+					p = valueField.split(a);
+					t = a;
+					p[1] && setRes(parseInt(p[0]) + parseInt(p[1]));
+					p[1] && setDisableBtn(true);
+				}
+				if (a === '-') {
+					p = valueField.split(a);
+					t = a;
+					setRes(parseInt(p[0]) - parseInt(p[1]));
+					setDisableBtn(true);
+				}
+				if (a === '*') {
+					p = valueField.split(a);
+					t = a;
+					setRes(parseInt(p[0]) * parseInt(p[1]));
+					setDisableBtn(true);
+				}
+				if (a === '/') {
+					p = valueField.split(a);
+					t = a;
+					setRes(parseInt(p[0]) / parseInt(p[1]));
+					setDisableBtn(true);
+				}
+			});
 			setValueField('');
+			setDisableBtn(false);
+		}
+		if (fieldValue === 'C') {
+			setRes('');
+			setValueField('');
+			setDisableBtn(false);
 		}
 	};
 	return (
 		<div>
 			<header>
 				<div className='monitor'>
-					{!res && valueField}
+					{valueField}
 					{res}
 				</div>
 			</header>
@@ -114,11 +146,14 @@ const Calc = () => {
 					))}
 				</div>
 				<div className='btns'>
-					<Quads numb='+' onClick={handleClick} />
-					<Quads numb='-' onClick={handleClick} />
-					<Quads numb='*' onClick={handleClick} />
-					<Quads numb='/' onClick={handleClick} />
-					<Quads numb='=' onClick={handleClick} />
+					{operators.map((o) => (
+						<Quads
+							key={o.key}
+							numb={o.tip}
+							onClick={handleClick}
+							disabled={o.tip === '=' ? false : disableBtn}
+						/>
+					))}
 				</div>
 			</div>
 		</div>
