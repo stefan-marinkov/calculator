@@ -69,80 +69,101 @@ const Calc = () => {
 		},
 		{
 			key: 10,
+			tip: '.',
+		},
+		{
+			key: 11,
 			tip: 'C',
 		},
 	];
-	const toLocaleString = (num) =>
-		String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ');
+	// const toLocaleString = (num) =>
+	// 	String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ');
 
-	const removeSpaces = (num) => num.toString().replace(/\s/g, '');
+	// const removeSpaces = (num) => num.toString().replace(/\s/g, '');
 	const [calculate, setCalculate] = useState({
 		num: 0,
 		result: 0,
 		sign: '',
 	});
-	const [valueField, setValueField] = useState('');
-	const [res, setRes] = useState();
+
 	const [disableBtn, setDisableBtn] = useState(false);
 
-	const handleClick = (e) => {
+	const signHandle = (e) => {
 		e.preventDefault();
-		setRes('');
-		const fieldValue = e.target.innerHTML;
-		setValueField((prev) => prev + fieldValue);
-		fieldValue === '+' && setDisableBtn(true);
+		setCalculate({
+			...calculate,
+			sign: e.target.innerHTML,
 
-		if (fieldValue === '=') {
-			let v = valueField.split('');
-			let p;
-			let t;
-			v.filter((a) => {
-				if (a === '+') {
-					p = valueField.split(a);
-					t = a;
-					p[1] && setRes(parseInt(p[0]) + parseInt(p[1]));
-					p[1] && setDisableBtn(true);
-				}
-				if (a === '-') {
-					p = valueField.split(a);
-					t = a;
-					p[1] && setRes(parseInt(p[0]) - parseInt(p[1]));
-					p[1] && setDisableBtn(true);
-				}
-				if (a === '*') {
-					p = valueField.split(a);
-					t = a;
-					p[1] && setRes(parseInt(p[0]) * parseInt(p[1]));
-					p[1] && setDisableBtn(true);
-				}
-				if (a === '/') {
-					p = valueField.split(a);
-					t = a;
-					p[1] && setRes(parseInt(p[0]) / parseInt(p[1]));
-					p[1] && setDisableBtn(true);
-				}
-			});
-			setValueField('');
-			setDisableBtn(false);
+			result:
+				!calculate.result && calculate.num
+					? calculate.num
+					: calculate.result,
+			num: 0,
+		});
+	};
+
+	const resultHandle = (e) => {
+		e.preventDefault();
+		function math(a, b, sign) {
+			return sign === '+'
+				? a + b
+				: sign === '-'
+				? a - b
+				: sign === '*'
+				? a * b
+				: a / b;
 		}
-		if (fieldValue === 'C') {
-			setRes('');
-			setValueField('');
-			setDisableBtn(false);
-		}
+		setCalculate({
+			...calculate,
+			result: math(
+				Number(calculate.result),
+				Number(calculate.num),
+				calculate.sign
+			),
+
+			sign: '',
+			num: 0,
+		});
+	};
+
+	const restartHandle = (e) => {
+		e.preventDefault();
+		setCalculate({
+			num: 0,
+			result: 0,
+			sign: '',
+		});
+	};
+	const numberHandle = (e) => {
+		e.preventDefault();
+		const value = e.target.innerHTML;
+
+		setCalculate({
+			...calculate,
+			num: Number(calculate.num + value),
+
+			result: !calculate.sign ? 0 : calculate.result,
+		});
 	};
 	return (
 		<div>
 			<header>
 				<div className='monitor'>
-					{valueField}
-					{res}
+					{!calculate.result ? '' : calculate.result}
+					{calculate.sign && calculate.sign}
+					{!calculate.num ? '' : calculate.num}
 				</div>
 			</header>
 			<div className='all-tips'>
 				<div className='tips'>
 					{numbs.map((n) => (
-						<Quads key={n.key} numb={n.tip} onClick={handleClick} />
+						<Quads
+							key={n.key}
+							numb={n.tip}
+							onClick={
+								n.tip === 'C' ? restartHandle : numberHandle
+							}
+						/>
 					))}
 				</div>
 				<div className='btns'>
@@ -150,7 +171,14 @@ const Calc = () => {
 						<Quads
 							key={o.key}
 							numb={o.tip}
-							onClick={handleClick}
+							onClick={
+								o.tip === '+' ||
+								o.tip === '-' ||
+								o.tip === '*' ||
+								o.tip === '/'
+									? signHandle
+									: resultHandle
+							}
 							disabled={o.tip === '=' ? false : disableBtn}
 						/>
 					))}
