@@ -2,23 +2,16 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-}
-
-.App {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-header {
-	margin-bottom: 5%;
+	color: wheat;
+	background: black;
 }
 
 .container {
-	width: 80%;
-	margin: 0 auto;
-	@media screen and (max-width: 600px) {
+	height: 100%;
+	width: 60%;
+	margin: 15% auto;
+	@media screen and (max-width: 792px) {
 		width: 100%;
+		margin-top: 15%;
 	}
 }

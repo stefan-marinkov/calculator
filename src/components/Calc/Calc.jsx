@@ -1,81 +1,10 @@
 import React, { createRef, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { operators } from '../../helpers/numbs';
 import Quads from '../Quads/Quads';
 import './Calc.scss';
 
 const Calc = () => {
-	const operators = [
-		{
-			key: 1,
-			tip: '+',
-		},
-		{
-			key: 2,
-			tip: '-',
-		},
-		{
-			key: 3,
-			tip: '*',
-		},
-		{
-			key: 4,
-			tip: '/',
-		},
-		{
-			key: 5,
-			tip: '=',
-		},
-	];
-	const numbs = [
-		{
-			key: 1,
-			tip: '1',
-		},
-		{
-			key: 2,
-			tip: '2',
-		},
-		{
-			key: 3,
-			tip: '3',
-		},
-		{
-			key: 4,
-			tip: '4',
-		},
-		{
-			key: 5,
-			tip: '5',
-		},
-		{
-			key: 6,
-			tip: '6',
-		},
-		{
-			key: 7,
-			tip: '7',
-		},
-		{
-			key: 8,
-			tip: '8',
-		},
-		{
-			key: 9,
-			tip: '9',
-		},
-		{
-			key: 0,
-			tip: '0',
-		},
-		{
-			key: 10,
-			tip: '.',
-		},
-		{
-			key: 11,
-			tip: 'C',
-		},
-	];
 	// const toLocaleString = (num) =>
 	// 	String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ');
 
@@ -162,17 +91,31 @@ const Calc = () => {
 		});
 	};
 	return (
-		<div>
-			<header>
-				<div className='monitor'>
-					{!calculate.result ? '' : calculate.result}
-					{calculate.sign && calculate.sign}
-					{!calculate.num ? '' : calculate.num}
+		<>
+			<header className='monitor'>
+				<div className='monitor-grid'>
+					<div>
+						{!calculate.result ? '' : calculate.result}
+						{calculate.sign && calculate.sign}
+						{!calculate.num ? '' : calculate.num}
+					</div>
+					<div>
+						{operators.map(
+							(n) =>
+								n.tip === '<=' && (
+									<Quads
+										key={n.key}
+										numb={n.tip}
+										backspace='backspace-width'
+									/>
+								)
+						)}
+					</div>
 				</div>
 			</header>
 			<div className='all-tips'>
 				<div className='tips'>
-					{numbs.map((n) => (
+					{operators.map((n) => (
 						<Quads
 							key={n.key}
 							numb={n.tip}
@@ -181,14 +124,30 @@ const Calc = () => {
 									? restartHandle
 									: n.tip === '.'
 									? comaHandle
+									: n.tip === '+' ||
+									  n.tip === '-' ||
+									  n.tip === '*' ||
+									  n.tip === '/'
+									? signHandle
+									: n.tip === '='
+									? resultHandle
 									: numberHandle
 							}
-							grow={n.tip === 'C' ? 'grow' : ''}
-							marginLeft={n.tip === '.' ? 'marginLef' : ''}
+							disabled={
+								(n.tip === '%' ||
+									n.tip === '+' ||
+									n.tip === '-' ||
+									n.tip === '*' ||
+									n.tip === '/') &&
+								disableBtn
+							}
+
+							// grow={n.tip === 'C' ? 'grow' : ''}
+							// marginLeft={n.tip === '.' ? 'marginLef' : ''}
 						/>
 					))}
 				</div>
-				<div className='btns'>
+				{/* <div className='btns'>
 					{operators.map((o) => (
 						<Quads
 							key={o.key}
@@ -202,11 +161,12 @@ const Calc = () => {
 									: resultHandle
 							}
 							disabled={o.tip === '=' ? false : disableBtn}
+							growSecond={o.tip === '=' ? 'grow2' : ''}
 						/>
 					))}
-				</div>
+				</div> */}
 			</div>
-		</div>
+		</>
 	);
 };
 
