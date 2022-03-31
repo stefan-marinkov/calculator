@@ -1,9 +1,23 @@
 .tip {
 	height: 50px;
-	width: 75px;
+	width: 30%;
 	border: 1px solid black;
-	margin: 5%;
+	margin-top: 2%;
+	margin-left: 2%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	&.grow {
+		flex-basis: 100%;
+		width: 30%;
+		margin-left: 70%;
+		margin-right: 4%;
+	}
+	&.marginLeft {
+		margin-left: auto;
+	}
+	@media screen and (max-width: 600px) {
+		height: 35px;
+		width: 50px;
+	}
 }

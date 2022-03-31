@@ -100,6 +100,7 @@ const Calc = () => {
 					: calculate.result,
 			num: 0,
 		});
+		setDisableBtn(true);
 	};
 
 	const resultHandle = (e) => {
@@ -124,6 +125,7 @@ const Calc = () => {
 			sign: '',
 			num: 0,
 		});
+		setDisableBtn(false);
 	};
 
 	const restartHandle = (e) => {
@@ -133,6 +135,7 @@ const Calc = () => {
 			result: 0,
 			sign: '',
 		});
+		setDisableBtn(false);
 	};
 	const numberHandle = (e) => {
 		e.preventDefault();
@@ -140,9 +143,22 @@ const Calc = () => {
 
 		setCalculate({
 			...calculate,
-			num: Number(calculate.num + value),
+			num:
+				calculate.num === 0 && value === '0'
+					? '0'
+					: Number(calculate.num + value),
 
 			result: !calculate.sign ? 0 : calculate.result,
+		});
+	};
+
+	const comaHandle = (e) => {
+		e.preventDefault();
+		setCalculate({
+			...calculate,
+			num: !calculate.num.toString().includes('.')
+				? calculate.num + e.target.innerHTML
+				: calculate.num,
 		});
 	};
 	return (
@@ -161,8 +177,14 @@ const Calc = () => {
 							key={n.key}
 							numb={n.tip}
 							onClick={
-								n.tip === 'C' ? restartHandle : numberHandle
+								n.tip === 'C'
+									? restartHandle
+									: n.tip === '.'
+									? comaHandle
+									: numberHandle
 							}
+							grow={n.tip === 'C' ? 'grow' : ''}
+							marginLeft={n.tip === '.' ? 'marginLef' : ''}
 						/>
 					))}
 				</div>

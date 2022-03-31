@@ -9,17 +9,23 @@
 	align-items: center;
 	padding-right: 5%;
 	font-size: 2rem;
+	@media screen and (max-width: 600px) {
+		width: 100%;
+	}
 }
 
 .all-tips {
 	display: flex;
 	width: 80%;
 	margin: 10% auto;
+	@media screen and (max-width: 600px) {
+		width: 100%;
+	}
 }
 .tips {
 	border: 1px solid black;
-	display: flex;
 	width: 70%;
+	display: flex;
 	min-height: 400px;
 	flex-wrap: wrap;
 }
