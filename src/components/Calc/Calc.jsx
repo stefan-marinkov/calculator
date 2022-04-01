@@ -1,10 +1,16 @@
-import React, { createRef, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useState } from 'react';
 import { operators } from '../../helpers/numbs';
 import Quads from '../Quads/Quads';
-import './Calc.scss';
+import {
+	StyledMonitor,
+	StyledMonitorGrid,
+	StyledAllTips,
+	StyledTips,
+	StyledMonitorDisplay,
+	StyledCalculator,
+} from './Calc.styled.jsx';
 
-const Calc = () => {
+const Calc = ({ changeTheme }) => {
 	// const toLocaleString = (num) =>
 	// 	String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ');
 
@@ -90,15 +96,19 @@ const Calc = () => {
 				: calculate.num,
 		});
 	};
+	const backspaceHandle = (e) => {
+		e.preventDefault();
+	};
+
 	return (
-		<>
-			<header className='monitor'>
-				<div className='monitor-grid'>
-					<div>
+		<StyledCalculator changeTheme={changeTheme}>
+			<StyledMonitor changeTheme={changeTheme}>
+				<StyledMonitorGrid changeTheme={changeTheme}>
+					<StyledMonitorDisplay changeTheme={changeTheme}>
 						{!calculate.result ? '' : calculate.result}
 						{calculate.sign && calculate.sign}
 						{!calculate.num ? '' : calculate.num}
-					</div>
+					</StyledMonitorDisplay>
 					<div>
 						{operators.map(
 							(n) =>
@@ -106,15 +116,18 @@ const Calc = () => {
 									<Quads
 										key={n.key}
 										numb={n.tip}
-										backspace='backspace-width'
+										onClick={backspaceHandle}
+										maxWidth
+										maxHeight
+										changeTheme={changeTheme}
 									/>
 								)
 						)}
 					</div>
-				</div>
-			</header>
-			<div className='all-tips'>
-				<div className='tips'>
+				</StyledMonitorGrid>
+			</StyledMonitor>
+			<StyledAllTips changeTheme={changeTheme}>
+				<StyledTips changeTheme={changeTheme}>
 					{operators.map((n) => (
 						<Quads
 							key={n.key}
@@ -141,32 +154,12 @@ const Calc = () => {
 									n.tip === '/') &&
 								disableBtn
 							}
-
-							// grow={n.tip === 'C' ? 'grow' : ''}
-							// marginLeft={n.tip === '.' ? 'marginLef' : ''}
+							changeTheme={changeTheme}
 						/>
 					))}
-				</div>
-				{/* <div className='btns'>
-					{operators.map((o) => (
-						<Quads
-							key={o.key}
-							numb={o.tip}
-							onClick={
-								o.tip === '+' ||
-								o.tip === '-' ||
-								o.tip === '*' ||
-								o.tip === '/'
-									? signHandle
-									: resultHandle
-							}
-							disabled={o.tip === '=' ? false : disableBtn}
-							growSecond={o.tip === '=' ? 'grow2' : ''}
-						/>
-					))}
-				</div> */}
-			</div>
-		</>
+				</StyledTips>
+			</StyledAllTips>
+		</StyledCalculator>
 	);
 };
 

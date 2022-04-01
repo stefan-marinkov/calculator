@@ -1,19 +1,19 @@
 import React from 'react';
-import './Quads.scss';
+
+import { StyledButton } from './Quads.styled.jsx';
 
 const Quads = React.forwardRef(
-	(
-		{ numb, onClick, disabled, grow, growSecond, backspace, marginLeft },
-		ref
-	) => {
+	({ numb, onClick, disabled, maxWidth, maxHeight, changeTheme }, ref) => {
 		return (
-			<button
-				className={`tip ${grow} ${growSecond} ${backspace} ${marginLeft}`}
+			<StyledButton
+				changeTheme={changeTheme}
+				maxWidth={maxWidth}
+				maxHeight={maxHeight}
 				onClick={onClick}
 				ref={ref}
 				disabled={disabled}>
 				{numb}
-			</button>
+			</StyledButton>
 		);
 	}
 );
