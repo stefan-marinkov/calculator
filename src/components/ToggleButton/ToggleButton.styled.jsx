@@ -12,7 +12,7 @@ export const StyledToggle = styled.div`
 `;
 
 export const StyledTitleTheme = styled.div`
-	width: 100px;
+	width: 150px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

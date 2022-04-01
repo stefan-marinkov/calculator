@@ -13,9 +13,9 @@ const ToggleButton = ({ handleChange, changeTheme }) => {
 		<StyledToggle changeTheme={changeTheme}>
 			<StyledTitleTheme changeTheme={changeTheme}>
 				{changeTheme ? (
-					<label>Light Mode</label>
+					<label>Light Mode Switch</label>
 				) : (
-					<label>Dark Mode</label>
+					<label>Dark Mode Switch</label>
 				)}
 			</StyledTitleTheme>
 			<CheckBoxWrapper changeTheme={changeTheme}>

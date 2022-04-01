@@ -81,6 +81,8 @@ const Calc = ({ changeTheme }) => {
 			num:
 				calculate.num === 0 && value === '0'
 					? '0'
+					: calculate.num === 0 && value === '00'
+					? '00'
 					: Number(calculate.num + value),
 
 			result: !calculate.sign ? 0 : calculate.result,
